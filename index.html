@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: pink;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: sans-serif;
+  overflow: hidden;
+  transition: 0.5s;
+}
+
+/* tombol */
+button {
+  padding: 15px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  background: #ff4b5c;
+  color: white;
+  cursor: pointer;
+  position: relative;
+  z-index: 999; /* 🔥 biar selalu di atas */
+}
+
+/* container */
+.container {
+  position: absolute;
+  text-align: center;
+  color: white;
+  opacity: 0;
+  transition: 1s;
+  pointer-events: none; /* 🔥 FIX UTAMA */
+}
+
+.container.show {
+  opacity: 1;
+}
+
+/* chaos mode */
+.chaos {
+  animation: shake 0.2s infinite;
+  background: black !important;
+}
+
+@keyframes shake {
+  0% { transform: translate(2px,2px); }
+  25% { transform: translate(-2px,2px); }
+  50% { transform: translate(2px,-2px); }
+  75% { transform: translate(-2px,-2px); }
+  100% { transform: translate(2px,2px); }
+}
+
+/* emoji jatuh */
+.emoji {
+  position: absolute;
+  top: -50px;
+  font-size: 25px;
+  animation: fall 2s linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<button id="btn">Klik Aku 💌</button>
+
+<div class="container" id="box">
+  <h1 id="text">Aku punya sesuatu buat kamu ❤️</h1>
+  <p id="sub">Tunggu ya...</p>
+</div>
+
+<!-- 🔊 SOUND -->
+<audio id="prankSound" src="prank.mp3"></audio>
+
+<script>
+const btn = document.getElementById("btn");
+const box = document.getElementById("box");
+const text = document.getElementById("text");
+const sub = document.getElementById("sub");
+const sound = document.getElementById("prankSound");
+
+function start() {
+  btn.style.display = "none";
+  box.classList.add("show");
+
+  setTimeout(() => {
+    text.innerHTML = "Sebenernya aku sayang kamu 🥺";
+  }, 1500);
+
+  setTimeout(() => {
+    sub.innerHTML = "Serius ini dari hati...";
+  }, 3000);
+
+  setTimeout(() => {
+    text.innerHTML = "PRANK 😈";
+    sub.innerHTML = "Kena tipu lu 🤣";
+
+    // 🔊 PLAY SOUND (fix biar pasti bunyi)
+    sound.currentTime = 0;
+    sound.play();
+
+    document.body.classList.add("chaos");
+
+    setInterval(() => {
+      let e = document.createElement("div");
+      e.innerHTML = "🤡";
+      e.classList.add("emoji");
+
+      e.style.left = Math.random() * window.innerWidth + "px";
+
+      document.body.appendChild(e);
+
+      setTimeout(() => e.remove(), 2000);
+    }, 100);
+
+  }, 5000);
+}
+
+// 🔥 biar gak double trigger
+btn.addEventListener("click", start, { once: true });
+btn.addEventListener("touchstart", start, { once: true });
+</script>
+
+</body>
+</html>
